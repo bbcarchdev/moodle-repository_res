@@ -1,4 +1,19 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Repository plugin which uses an external application to enable users to
  * select RES media URLs as resources.
@@ -11,6 +26,9 @@
  * @author    Elliot Smith <elliot.smith@bbc.co.uk>
  * @license   GPL v3 - https://www.gnu.org/licenses/gpl-3.0.txt
  */
+
+defined('MOODLE_INTERNAL') || die;
+
 global $CFG;
 require_once($CFG->dirroot . '/repository/lib.php');
 
@@ -27,7 +45,7 @@ class repository_res extends repository {
             'pluginservice_url' => getenv('PLUGINSERVICE_URL')
         );
 
-        $id = repository::static_function('res','create', 'res', 0,
+        $id = repository::static_function('res', 'create', 'res', 0,
                                           context_system::instance(),
                                           $options, 0);
 
@@ -38,8 +56,8 @@ class repository_res extends repository {
      * Expose the RES Moodle plugin service URL as a configuration option.
      */
     public static function get_instance_option_names() {
-        $option_names = array('pluginservice_url');
-        return array_merge(parent::get_instance_option_names(), $option_names);
+        $optionNames = array('pluginservice_url');
+        return array_merge(parent::get_instance_option_names(), $optionNames);
     }
 
     /**
@@ -50,10 +68,8 @@ class repository_res extends repository {
                                                 $classname = 'repository_res') {
         parent::instance_config_form($mform, 'repository_res');
 
-        // name
         $mform->setDefault('name', 'RES');
 
-        // pluginservice_url
         $mform->addElement('text', 'pluginservice_url',
                            get_string('res:pluginservice_url', 'repository_res'),
                            array('size' => '60'));
@@ -68,12 +84,12 @@ class repository_res extends repository {
      * Moodle plugin service).
      */
     public function get_listing($path = null, $page = null) {
-        // load external filepicker
-        $callback_url = new moodle_url('/') .
-                        'repository/res/callback.php?repo_id=' . $this->id;
+        // Load external filepicker.
+        $callbackUrl = new moodle_url('/') .
+                       'repository/res/callback.php?repo_id=' . $this->id;
 
-        $pluginservice_url = $this->get_option('pluginservice_url') .
-                             '?callback=' . urlencode($callback_url);
+        $pluginserviceUrl = $this->get_option('pluginservice_url') .
+                            '?callback=' . urlencode($callbackUrl);
 
         return array(
             'nologin' => true,
@@ -81,7 +97,7 @@ class repository_res extends repository {
             'nosearch' => true,
             'object' => array(
                 'type' => 'text/html',
-                'src' => $pluginservice_url
+                'src' => $pluginserviceUrl
             )
         );
     }
