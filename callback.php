@@ -48,6 +48,7 @@
  */
 
 require(__DIR__ . '/../../config.php');
+require_login();
 
 // Extract and decode querystring.
 if (!isset($_GET['media'])) {
