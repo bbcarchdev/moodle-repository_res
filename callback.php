@@ -47,8 +47,6 @@
  * @license   GPL v3 - https://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-defined('MOODLE_INTERNAL') || die;
-
 // Extract and decode querystring.
 if (!isset($_GET['media'])) {
     die('media parameter must be set');
