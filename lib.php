@@ -33,6 +33,11 @@ require_once($CFG->dirroot . '/repository/lib.php');
 
 /**
  * Repository plugin providing access to the RES index for media searches.
+ *
+ * @package   repository_res
+ * @copyright BBC 2017
+ * @author    Elliot Smith <elliot.smith@bbc.co.uk>
+ * @license   GPL v3 - https://www.gnu.org/licenses/gpl-3.0.txt
  */
 class repository_res extends repository {
 
