@@ -15,8 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Repository plugin which uses an external application to enable users to
- * select RES media URLs as resources.
+ * Repository plugin which enables users to select RES media URLs as resources.
  *
  * This requires a RES Moodle plugin service to act as its back-end and to
  * present the file chooser.
@@ -32,12 +31,17 @@ defined('MOODLE_INTERNAL') || die;
 global $CFG;
 require_once($CFG->dirroot . '/repository/lib.php');
 
+/**
+ * Repository plugin providing access to the RES index for media searches.
+ */
 class repository_res extends repository {
 
     /**
      * Create a default instance of the plugin when the plugin starts.
      * This will point at the default BBC-maintained RES Moodle plugin
      * service.
+     *
+     * @return bool
      */
     public static function plugin_init() {
         $options = array(
@@ -54,15 +58,20 @@ class repository_res extends repository {
 
     /**
      * Expose the RES Moodle plugin service URL as a configuration option.
+     *
+     * @return array
      */
     public static function get_instance_option_names() {
-        $optionNames = array('pluginservice_url');
-        return array_merge(parent::get_instance_option_names(), $optionNames);
+        $optionnames = array('pluginservice_url');
+        return array_merge(parent::get_instance_option_names(), $optionnames);
     }
 
     /**
      * An instance can be configured to point at any RES Moodle plugin service
      * instance, but defaults to the one maintained by the BBC.
+     *
+     * @param object $mform
+     * @param string $classname
      */
     public static function instance_config_form($mform,
                                                 $classname = 'repository_res') {
@@ -82,14 +91,18 @@ class repository_res extends repository {
     /**
      * The listing comes from an external file picker (provided by the RES
      * Moodle plugin service).
+     *
+     * @param string $path
+     * @param int $page
+     * @return array
      */
     public function get_listing($path = null, $page = null) {
         // Load external filepicker.
-        $callbackUrl = new moodle_url('/') .
+        $callbackurl = new moodle_url('/') .
                        'repository/res/callback.php?repo_id=' . $this->id;
 
-        $pluginserviceUrl = $this->get_option('pluginservice_url') .
-                            '?callback=' . urlencode($callbackUrl);
+        $pluginserviceurl = $this->get_option('pluginservice_url') .
+                            '?callback=' . urlencode($callbackurl);
 
         return array(
             'nologin' => true,
@@ -97,11 +110,16 @@ class repository_res extends repository {
             'nosearch' => true,
             'object' => array(
                 'type' => 'text/html',
-                'src' => $pluginserviceUrl
+                'src' => $pluginserviceurl
             )
         );
     }
 
+    /**
+     * Return list of types of resource provided by this plugin.
+     *
+     * @return int
+     */
     public function supported_returntypes() {
         return FILE_EXTERNAL;
     }

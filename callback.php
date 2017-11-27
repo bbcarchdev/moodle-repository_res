@@ -15,8 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Implementation of a callback handler for accepting media item selections
- * from the RES Moodle plugin service.
+ * Callback handler for accepting media item selections from the RES Moodle search service.
  *
  * See https://docs.moodle.org/dev/Repository_plugins_embedding_external_file_chooser
  *
