@@ -103,8 +103,7 @@ class repository_res extends repository {
      */
     public function get_listing($path = null, $page = null) {
         // Load external filepicker.
-        $callbackurl = new moodle_url('/') .
-                       'repository/res/callback.php?repo_id=' . $this->id;
+        $callbackurl = new moodle_url('/repository/res/callback.php', ['repo_id' => $this->id]);
 
         $pluginserviceurl = $this->get_option('pluginservice_url') .
                             '?callback=' . urlencode($callbackurl);
