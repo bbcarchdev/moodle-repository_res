@@ -72,6 +72,8 @@ if (property_exists($selected, 'date')) {
     $date = $selected->date;
 }
 
+$sourcekey = sha1($uri . repository::get_secret_key() . sesskey());
+
 $html = <<<HTML
 <html>
 <head>
@@ -80,6 +82,7 @@ $html = <<<HTML
     window.onload = function() {
         var resource = {};
         resource.source = "$uri";
+        resource.sourcekey = "$sourcekey";
         resource.title = "$label";
         resource.thumbnail = "$thumbnail";
         resource.datecreated = "$date";
