@@ -72,7 +72,8 @@ if (property_exists($selected, 'date')) {
     $date = $selected->date;
 }
 
-$sourcekey = sha1($uri . repository::get_secret_key() . sesskey());
+$repo_key = $_GET['repo_key'];
+$sourcekey = sha1($uri . $repo_key . sesskey());
 
 $html = <<<HTML
 <html>
