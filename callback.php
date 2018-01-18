@@ -20,9 +20,13 @@
  * See https://docs.moodle.org/dev/Repository_plugins_embedding_external_file_chooser
  *
  * When a piece of media is selected in the RES Moodle plugin service,
- * the user's browser is forwarded to this page. The URL contains one
- * querystring variable, "media", which is a JSON-encoded representation of the
+ * the user's browser is forwarded to this page. The URL contains a
+ * query string variable, "media", which is a JSON-encoded representation of the
  * selected piece of media.
+ *
+ * It also contains the secret key for the repo in the "repo_key" query string
+ * variable. This is used to construct a sourcekey property in the resource
+ * object, to verify that the selected media comes from a registered source.
  *
  * An example of the decoded JSON:
  *
@@ -50,14 +54,17 @@
 require(__DIR__ . '/../../config.php');
 require_login();
 
-// Extract and decode querystring.
+// Extract and decode media from querystring
 if (!isset($_GET['media'])) {
     die('media parameter must be set');
 }
 
 $media = $_GET['media'];
-
 $selected = json_decode($_GET['media']);
+
+if (!$selected) {
+    die('media JSON could not be decoded');
+}
 
 $uri = $selected->uri;
 $label = $selected->label;
@@ -72,9 +79,16 @@ if (property_exists($selected, 'date')) {
     $date = $selected->date;
 }
 
+// Construct the source key to verify that the selected media is from a
+// trusted source
+if (!isset($_GET['repo_key'])) {
+    die('repo_key must be provided to verify source of media');
+}
+
 $repo_key = $_GET['repo_key'];
 $sourcekey = sha1($uri . $repo_key . sesskey());
 
+// Construct HTML which will populate the file picker pop-up
 $html = <<<HTML
 <html>
 <head>
