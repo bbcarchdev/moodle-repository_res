@@ -40,6 +40,10 @@ Alternatively, res_search_service can run on a dedicated server and the Moodle p
 
 Finally, [`res_moodle_stack`](https://github.com/bbcarchdev/res_moodle_stack) provides a [Docker](http://www.docker.com/) configuration for testing the plugin inside a Moodle instance. This runs Moodle and the plugin distribution (made by `res_moodle_plugin_distro_maker`) on Apache and MariaDB.
 
+## A note on Moodle configuration
+
+When the plugin is installed, the default instance is configured to point at the RES search service packaged with the plugin. If you change the domain name of the server, or otherwise move the Moodle installation (e.g. put it into a subdirectory of its original host), you will need to reconfigure the plugin's `pluginservice_url` ("URL of the RES Moodle plugin service") setting to point at the search service's new URL.
+
 ## Contributing
 
 Please log any issues on [github](https://github.com/bbcarchdev/moodle-repository_res/issues). Code contributions via github pull requests are welcome.
