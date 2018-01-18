@@ -27,6 +27,6 @@ defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'repository_res';
 $plugin->requires = 2017051500;
-$plugin->version = 2017112705;
+$plugin->version = 2018011800;
 $plugin->maturity = MATURITY_BETA;
-$plugin->release = '0.0.9';
+$plugin->release = '0.0.10';
